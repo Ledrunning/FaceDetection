@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/image_view"
+        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/test"
+        android:textSize="12sp"
+        android:layout_centerInParent="true"
+        android:layout_alignParentBottom="true" />
+    <Button
+        android:text="Определить"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/detect_face"
+        android:textColor="@android:color/holo_green_light"
+        android:textSize="12sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true" />
+    <Button
+        android:text="Назад"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/back"
+        android:textColor="@android:color/holo_green_light"
+        android:textSize="12sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>
