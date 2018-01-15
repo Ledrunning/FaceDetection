@@ -1,7 +1,7 @@
 # FaceDetection 
 
-##Android application for face detection powered by Xamarin
-##Minimum version - 4.0, work version 5.1 Lollipop;
+## Android application for face detection powered by Xamarin
+## Minimum version - 4.0, work version 5.1 Lollipop;
 
 * Use internal camera;
 * Take a photo;
