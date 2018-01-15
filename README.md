@@ -10,4 +10,4 @@ Application will detect face and distance to the face from photo which you get;
 Tested on tablet with Android 5.1 Lollipop; 
 //TODO: close camera and destroy object after pushing back button; 
 
-![My Face is detected!](https://habrastorage.org/webt/eg/gm/94/eggm94sgpfjqy2xyg0nvuykqdfm.jpeg)
+!![](https://habrastorage.org/webt/26/va/ij/26vaijfieefkemrhs8jvo8t7voe.jpeg)
