@@ -8,7 +8,7 @@ using System;
 using Android.Content;
 using static Test.Config.ProgramConstants;
 
-//TODO: Захват растояния в реальном времени с камеры, отрисовка прямоугольника при
+//TODO: Захват растояния в реальном времени с камеры, отрисовка прямоугольника 
 //при фиксировании лица
 //Сохранение фото
 //Закрытие процесса работы с камерой при нажатии кнопки "Назад"
@@ -20,6 +20,7 @@ namespace Test
     {
         //Получил Bitmap из картинки
         private Bitmap cameraBitmap = null;
+        //Intent intent;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -94,6 +95,7 @@ namespace Test
         //Обработчик кнопки назад
         void btnBack_HandleClick(object sender, EventArgs e)
         {
+            //intent.Dispose();
             SetContentView(Resource.Layout.Main);
         }
 
