@@ -11,11 +11,11 @@ using static Test.Config.ProgramConstants;
 //TODO: Захват растояния в реальном времени с камеры, отрисовка прямоугольника 
 //при фиксировании лица
 //Сохранение фото
-//Закрытие процесса работы с камерой при нажатии кнопки "Назад"
+//Применение фрагментов, вместо переключения Activity
 
 namespace Test
 {
-    [Activity(Label = "Face detection v0.1B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Face detection v1.1B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         //Получил Bitmap из картинки
@@ -29,60 +29,14 @@ namespace Test
             SetContentView(Resource.Layout.Main);
             //Событие на кнопку для кнопки сделать фото;
             ((Button)FindViewById(Resource.Id.take_picture)).Click += btntake_HandleClick;
-
-           
         }
 
+        #region Button Handlers
         //Обработчик для открытия камеры
         void btntake_HandleClick(object sender, EventArgs e)
         {
-            //call OpenCamera() Event
-            openCamera();
-        }
-
-        
-        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
-        {
-            base.OnActivityResult(requestCode, resultCode, data);
-            //Проверяем запрос кода с константой
-            if (TAKE_PICTURE_CODE == requestCode)
-            {
-                //Запускаем процесс обработки данных изображения камеры
-                processCameraImage(data);
-            }
-        }
-
-        /// <summary>
-        /// Метод для открытия камеры
-        /// </summary>
-        private void openCamera()
-        {
-            using (Intent intent = new Intent(Android.Provider.MediaStore.ActionImageCapture))
-            {
-                StartActivityForResult(intent, TAKE_PICTURE_CODE);
-            }
-                
-        }
-
-        /// <summary>
-        /// Метод обработки изображения и смена лэйаута приложения
-        /// </summary>
-        /// <param name="intent">Intent.</param>
-        private void processCameraImage(Intent intent)
-        {
-            //Меняем основное окно на окно захвата изображения
-            SetContentView(Resource.Layout.detectlayout);
-
-            //Повесим событие на кнопку определения лиц
-            ((Button)FindViewById(Resource.Id.detect_face)).Click += btnDetect_HandleClick;
-            ((Button)FindViewById(Resource.Id.back)).Click += btnBack_HandleClick;
-
-            //Получаем изображения из элемента ImageView
-            ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
-            cameraBitmap = (Bitmap)intent.Extras.Get("data");
-
-            //Вставляем изображение из CameraBitmap
-            imageView.SetImageBitmap(cameraBitmap);
+            //Вызов события OpenCamera() 
+            OpenCamera();
         }
 
         //Обработчик кнопки определения лиц
@@ -95,10 +49,65 @@ namespace Test
         //Обработчик кнопки назад
         void btnBack_HandleClick(object sender, EventArgs e)
         {
-            //intent.Dispose();
+            FinishActivity(Resource.Layout.detectlayout);
             SetContentView(Resource.Layout.Main);
+            //Событие на кнопку для кнопки сделать фото;
+            ((Button)FindViewById(Resource.Id.take_picture)).Click += btntake_HandleClick;
+        }
+        #endregion
+
+              
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            //Проверяем запрос кода с константой
+            if (TAKE_PICTURE_CODE == requestCode)
+            {
+                //Запускаем процесс обработки данных изображения камеры
+                ProcessCameraImage(data);
+            }
         }
 
+        /// <summary>
+        /// Метод для открытия камеры
+        /// </summary>
+        private void OpenCamera()
+        {
+            using (Intent intent = new Intent(Android.Provider.MediaStore.ActionImageCapture))
+            {
+                StartActivityForResult(intent, TAKE_PICTURE_CODE);
+            }
+        }
+
+        /// <summary>
+        /// Метод обработки изображения и смена лэйаута приложения
+        /// </summary>
+        /// <param name="intent">Intent.</param>
+        private void ProcessCameraImage(Intent intent)
+        {
+            //Меняем основное окно на окно захвата изображения
+            SetContentView(Resource.Layout.detectlayout);
+            //Повесим событие на кнопку определения лиц
+            ((Button)FindViewById(Resource.Id.detect_face)).Click += btnDetect_HandleClick;
+            ((Button)FindViewById(Resource.Id.back)).Click += btnBack_HandleClick;
+
+            //Получаем изображения из элемента ImageView
+            ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
+            try
+            {
+                cameraBitmap = (Bitmap)intent.Extras.Get("data");
+                //Вставляем изображение из CameraBitmap
+                imageView.SetImageBitmap(cameraBitmap);
+            }
+            catch(Exception e)
+            {
+                Toast.MakeText(this, "Фото не сделанно!", ToastLength.Short).Show();
+                //cameraBitmap.Dispose();
+            }
+           
+        }
+
+      
         /// <summary>
         /// Детектирование лиц и прорисовка квадрата на каждом из лиц.
         /// </summary<
@@ -172,6 +181,7 @@ namespace Test
 
                 ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
                 imageView.SetImageBitmap(bitmap565);
+                
             }
         }
     }
