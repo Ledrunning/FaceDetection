@@ -15,7 +15,7 @@ using static Test.Config.ProgramConstants;
 
 namespace Test
 {
-    [Activity(Label = "Face detection v1.1B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Распознаватель v1.1B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         //Получил Bitmap из картинки
