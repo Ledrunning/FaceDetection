@@ -127,6 +127,7 @@ namespace Test
                 //Создаем основной Bitmap
                 Bitmap bitmap565 = Bitmap.CreateBitmap(width, height, Bitmap.Config.Rgb565);
                 Paint ditherPaint = new Paint();
+                //Рамка захвата
                 Paint drawPaint = new Paint();
                 ditherPaint.Dither = true;
                 //Устанавливаем цвет квадрата, штриховку, толщину 
