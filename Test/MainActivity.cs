@@ -15,13 +15,12 @@ using static Test.Config.ProgramConstants;
 
 namespace Test
 {
-    [Activity(Label = "Face detection v0.1B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Face detection v1.0B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         //Получил Bitmap из картинки
         private Bitmap cameraBitmap = null;
-        //Intent intent;
-
+      
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -33,14 +32,45 @@ namespace Test
            
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
+        protected override void OnStop()
+        {
+            base.OnStop();
+        }
+
         //Обработчик для открытия камеры
         void btntake_HandleClick(object sender, EventArgs e)
         {
             //call OpenCamera() Event
-            openCamera();
+            Toast.MakeText(this, "Делаем фото", ToastLength.Long);
+            OpenCamera();
         }
 
-        
+        //Обработчик кнопки определения лиц
+        void btnDetect_HandleClick(object sender, EventArgs e)
+        {
+            //Вызываем метод определения лиц
+            Toast.MakeText(this, "Определение лица", ToastLength.Long);
+            detectFaces();
+        }
+
+        //Обработчик кнопки назад
+        void btnBack_HandleClick(object sender, EventArgs e)
+        {
+            Toast.MakeText(this, "Основное меню", ToastLength.Long);
+            SetContentView(Resource.Layout.Main);
+        }
+
+
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -52,18 +82,19 @@ namespace Test
             }
         }
 
+
         /// <summary>
         /// Метод для открытия камеры
         /// </summary>
-        private void openCamera()
+        private void OpenCamera()
         {
             using (Intent intent = new Intent(Android.Provider.MediaStore.ActionImageCapture))
             {
                 StartActivityForResult(intent, TAKE_PICTURE_CODE);
             }
-                
         }
 
+      
         /// <summary>
         /// Метод обработки изображения и смена лэйаута приложения
         /// </summary>
@@ -80,24 +111,12 @@ namespace Test
             //Получаем изображения из элемента ImageView
             ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
             cameraBitmap = (Bitmap)intent.Extras.Get("data");
-
+          
             //Вставляем изображение из CameraBitmap
             imageView.SetImageBitmap(cameraBitmap);
         }
 
-        //Обработчик кнопки определения лиц
-        void btnDetect_HandleClick(object sender, EventArgs e)
-        {
-            //Вызываем метод определения лиц
-            detectFaces();
-        }
-
-        //Обработчик кнопки назад
-        void btnBack_HandleClick(object sender, EventArgs e)
-        {
-            //intent.Dispose();
-            SetContentView(Resource.Layout.Main);
-        }
+                
 
         /// <summary>
         /// Детектирование лиц и прорисовка квадрата на каждом из лиц.
@@ -172,6 +191,8 @@ namespace Test
 
                 ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
                 imageView.SetImageBitmap(bitmap565);
+
+                //imageView.Dispose();
             }
         }
     }
