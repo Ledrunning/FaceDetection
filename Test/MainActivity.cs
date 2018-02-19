@@ -15,12 +15,13 @@ using static Test.Config.ProgramConstants;
 
 namespace Test
 {
-    [Activity(Label = "Face detection v0.1B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Распознаватель v1.1B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         //Получил Bitmap из картинки
         private Bitmap cameraBitmap = null;
-      
+        //Intent intent;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -45,15 +46,17 @@ namespace Test
             detectFaces();
         }
 
-        //Обработчик для открытия камеры
-        void btntake_HandleClick(object sender, EventArgs e)
+        //Обработчик кнопки назад
+        void btnBack_HandleClick(object sender, EventArgs e)
         {
-            //call OpenCamera() Event
-            openCamera();
+            FinishActivity(Resource.Layout.detectlayout);
+            SetContentView(Resource.Layout.Main);
+            //Событие на кнопку для кнопки сделать фото;
+            ((Button)FindViewById(Resource.Id.take_picture)).Click += btntake_HandleClick;
         }
         #endregion
 
-        
+
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -65,7 +68,6 @@ namespace Test
             }
         }
 
-
         /// <summary>
         /// Метод для открытия камеры
         /// </summary>
@@ -75,7 +77,6 @@ namespace Test
             {
                 StartActivityForResult(intent, TAKE_PICTURE_CODE);
             }
-                
         }
 
         /// <summary>
@@ -92,27 +93,21 @@ namespace Test
 
             //Получаем изображения из элемента ImageView
             ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
-            cameraBitmap = (Bitmap)intent.Extras.Get("data");
+            try
+            {
+                cameraBitmap = (Bitmap)intent.Extras.Get("data");
+                //Вставляем изображение из CameraBitmap
+                imageView.SetImageBitmap(cameraBitmap);
+            }
+            catch (Exception e)
+            {
+                Toast.MakeText(this, "Фото не сделанно!", ToastLength.Short).Show();
+                //cameraBitmap.Dispose();
+            }
 
-            //Вставляем изображение из CameraBitmap
-            imageView.SetImageBitmap(cameraBitmap);
         }
 
-        //Обработчик кнопки определения лиц
-        void btnDetect_HandleClick(object sender, EventArgs e)
-        {
-            //Вызываем метод определения лиц
-            detectFaces();
-        }
 
-        //Обработчик кнопки назад
-        void btnBack_HandleClick(object sender, EventArgs e)
-        {
-            //intent.Dispose();
-            SetContentView(Resource.Layout.Main);
-        }
-
-      
         /// <summary>
         /// Детектирование лиц и прорисовка квадрата на каждом из лиц.
         /// </summary<
@@ -129,23 +124,19 @@ namespace Test
                 FaceDetector detector = new FaceDetector(width, height, MAX_FACES);
                 //Создаем массив лиц
                 Android.Media.FaceDetector.Face[] faces = new Android.Media.FaceDetector.Face[MAX_FACES];
-
                 //Создаем основной Bitmap
                 Bitmap bitmap565 = Bitmap.CreateBitmap(width, height, Bitmap.Config.Rgb565);
                 Paint ditherPaint = new Paint();
                 Paint drawPaint = new Paint();
-
                 ditherPaint.Dither = true;
                 //Устанавливаем цвет квадрата, штриховку, толщину 
                 drawPaint.Color = Color.Red;
                 drawPaint.SetStyle(Paint.Style.Stroke);
                 drawPaint.StrokeWidth = 2;
-
                 //Создаем холст и устанавливаем
                 Canvas canvas = new Canvas();
                 canvas.SetBitmap(bitmap565);
                 canvas.DrawBitmap(cameraBitmap, 0, 0, ditherPaint);
-
                 //Получаем количество лиц
                 int facesFound = detector.FindFaces(bitmap565, faces);
                 //Средняя точка
@@ -155,14 +146,13 @@ namespace Test
                 float confidence = 0.0f;
                 //Печать в консоль для тестирования приложения
                 System.Console.WriteLine("Найдено лиц: " + facesFound);
-
                 //Проверка, что найдено хоть одно лицо
                 if (facesFound > 0)
                 {
                     //Обводим каждое лицо красным квадратом
                     for (int index = 0; index < facesFound; ++index)
                     {
-                        
+
                         faces[index].GetMidPoint(midPoint);
                         eyeDistance = faces[index].EyesDistance();
                         confidence = faces[index].Confidence();
@@ -186,10 +176,9 @@ namespace Test
 
                 ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
                 imageView.SetImageBitmap(bitmap565);
+
             }
         }
     }
 
 }
-
-
