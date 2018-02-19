@@ -11,11 +11,11 @@ using static Test.Config.ProgramConstants;
 //TODO: Захват растояния в реальном времени с камеры, отрисовка прямоугольника 
 //при фиксировании лица
 //Сохранение фото
-//Закрытие процесса работы с камерой при нажатии кнопки "Назад"
+//Применение фрагментов, вместо переключения Activity
 
 namespace Test
 {
-    [Activity(Label = "Face detection v1.0B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+    [Activity(Label = "Face detection v0.1B", MainLauncher = true, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         //Получил Bitmap из картинки
@@ -28,30 +28,13 @@ namespace Test
             SetContentView(Resource.Layout.Main);
             //Событие на кнопку для кнопки сделать фото;
             ((Button)FindViewById(Resource.Id.take_picture)).Click += btntake_HandleClick;
-
-           
         }
 
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-        }
-
-        protected override void OnPause()
-        {
-            base.OnPause();
-        }
-
-        protected override void OnStop()
-        {
-            base.OnStop();
-        }
-
+        #region Button Handlers
         //Обработчик для открытия камеры
         void btntake_HandleClick(object sender, EventArgs e)
         {
-            //call OpenCamera() Event
-            Toast.MakeText(this, "Делаем фото", ToastLength.Long);
+            //Вызов события OpenCamera() 
             OpenCamera();
         }
 
@@ -59,18 +42,18 @@ namespace Test
         void btnDetect_HandleClick(object sender, EventArgs e)
         {
             //Вызываем метод определения лиц
-            Toast.MakeText(this, "Определение лица", ToastLength.Long);
             detectFaces();
         }
 
-        //Обработчик кнопки назад
-        void btnBack_HandleClick(object sender, EventArgs e)
+        //Обработчик для открытия камеры
+        void btntake_HandleClick(object sender, EventArgs e)
         {
-            Toast.MakeText(this, "Основное меню", ToastLength.Long);
-            SetContentView(Resource.Layout.Main);
+            //call OpenCamera() Event
+            openCamera();
         }
+        #endregion
 
-
+        
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -78,7 +61,7 @@ namespace Test
             if (TAKE_PICTURE_CODE == requestCode)
             {
                 //Запускаем процесс обработки данных изображения камеры
-                processCameraImage(data);
+                ProcessCameraImage(data);
             }
         }
 
@@ -92,18 +75,17 @@ namespace Test
             {
                 StartActivityForResult(intent, TAKE_PICTURE_CODE);
             }
+                
         }
 
-      
         /// <summary>
         /// Метод обработки изображения и смена лэйаута приложения
         /// </summary>
         /// <param name="intent">Intent.</param>
-        private void processCameraImage(Intent intent)
+        private void ProcessCameraImage(Intent intent)
         {
             //Меняем основное окно на окно захвата изображения
             SetContentView(Resource.Layout.detectlayout);
-
             //Повесим событие на кнопку определения лиц
             ((Button)FindViewById(Resource.Id.detect_face)).Click += btnDetect_HandleClick;
             ((Button)FindViewById(Resource.Id.back)).Click += btnBack_HandleClick;
@@ -111,13 +93,26 @@ namespace Test
             //Получаем изображения из элемента ImageView
             ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
             cameraBitmap = (Bitmap)intent.Extras.Get("data");
-          
+
             //Вставляем изображение из CameraBitmap
             imageView.SetImageBitmap(cameraBitmap);
         }
 
-                
+        //Обработчик кнопки определения лиц
+        void btnDetect_HandleClick(object sender, EventArgs e)
+        {
+            //Вызываем метод определения лиц
+            detectFaces();
+        }
 
+        //Обработчик кнопки назад
+        void btnBack_HandleClick(object sender, EventArgs e)
+        {
+            //intent.Dispose();
+            SetContentView(Resource.Layout.Main);
+        }
+
+      
         /// <summary>
         /// Детектирование лиц и прорисовка квадрата на каждом из лиц.
         /// </summary<
@@ -191,8 +186,6 @@ namespace Test
 
                 ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
                 imageView.SetImageBitmap(bitmap565);
-
-                //imageView.Dispose();
             }
         }
     }

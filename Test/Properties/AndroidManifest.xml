@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="Test.Test" android:versionCode="1" android:versionName="1.0" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="Face_Detector.Face_Detector" android:versionCode="1" android:versionName="1.1B" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="21" />
 	<uses-permission android:name="android.permission.CAMERA" />
-  
-	<application android:allowBackup="true" android:label="@string/app_name" Icon="@drawable/appico" android:icon="@drawable/appico">
-    
-  </application>
+	<application android:allowBackup="true" android:label="@string/app_name" Icon="@drawable/appico" android:icon="@drawable/appico"></application>
 </manifest>
