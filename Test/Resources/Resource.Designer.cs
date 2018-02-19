@@ -64,19 +64,19 @@ namespace Test
 		{
 			
 			// aapt resource value: 0x7f050003
-			public const int back = 2131034115;
+			public const int btnBack = 2131034115;
 			
 			// aapt resource value: 0x7f050002
-			public const int detect_face = 2131034114;
+			public const int btnDetect_face = 2131034114;
+			
+			// aapt resource value: 0x7f050005
+			public const int btnTake_picture = 2131034117;
 			
 			// aapt resource value: 0x7f050000
 			public const int image_view = 2131034112;
 			
-			// aapt resource value: 0x7f050005
-			public const int take_picture = 2131034117;
-			
 			// aapt resource value: 0x7f050001
-			public const int test = 2131034113;
+			public const int tvDistanceToCamera = 2131034113;
 			
 			// aapt resource value: 0x7f050004
 			public const int tvScreen = 2131034116;

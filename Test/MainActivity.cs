@@ -28,7 +28,7 @@ namespace Test
             //Установка основного экрана
             SetContentView(Resource.Layout.Main);
             //Событие на кнопку для кнопки сделать фото;
-            ((Button)FindViewById(Resource.Id.take_picture)).Click += btntake_HandleClick;
+            ((Button)FindViewById(Resource.Id.btnTake_picture)).Click += btntake_HandleClick;
         }
 
         #region Button Handlers
@@ -52,7 +52,7 @@ namespace Test
             FinishActivity(Resource.Layout.detectlayout);
             SetContentView(Resource.Layout.Main);
             //Событие на кнопку для кнопки сделать фото;
-            ((Button)FindViewById(Resource.Id.take_picture)).Click += btntake_HandleClick;
+            ((Button)FindViewById(Resource.Id.btnTake_picture)).Click += btntake_HandleClick;
         }
         #endregion
 
@@ -88,8 +88,8 @@ namespace Test
             //Меняем основное окно на окно захвата изображения
             SetContentView(Resource.Layout.detectlayout);
             //Повесим событие на кнопку определения лиц
-            ((Button)FindViewById(Resource.Id.detect_face)).Click += btnDetect_HandleClick;
-            ((Button)FindViewById(Resource.Id.back)).Click += btnBack_HandleClick;
+            ((Button)FindViewById(Resource.Id.btnDetect_face)).Click += btnDetect_HandleClick;
+            ((Button)FindViewById(Resource.Id.btnBack)).Click += btnBack_HandleClick;
 
             //Получаем изображения из элемента ImageView
             ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
@@ -130,7 +130,7 @@ namespace Test
                 Paint drawPaint = new Paint();
                 ditherPaint.Dither = true;
                 //Устанавливаем цвет квадрата, штриховку, толщину 
-                drawPaint.Color = Color.Red;
+                drawPaint.Color = Color.Blue;
                 drawPaint.SetStyle(Paint.Style.Stroke);
                 drawPaint.StrokeWidth = 2;
                 //Создаем холст и устанавливаем
@@ -161,16 +161,18 @@ namespace Test
                          ", Расстояние до глаз: " + eyeDistance +
                          ", Средняя точка: (" + midPoint.X + ", " + midPoint.Y + ")");
 
+
+
                         //Передаем в TextView значение расстояния до лица
-                        ((TextView)FindViewById(Resource.Id.test)).Text = eyeDistance.ToString() + " см";
-                        ((TextView)FindViewById(Resource.Id.test)).SetTextColor(Color.Aqua);
-                        ((TextView)FindViewById(Resource.Id.test)).SetTextSize(Android.Util.ComplexUnitType.Sp, 26);
+                        ((TextView)FindViewById(Resource.Id.tvDistanceToCamera)).Text = string.Format("{0:0.00} см", eyeDistance); 
+                        //((TextView)FindViewById(Resource.Id.tvDistanceToCamera)).SetTextColor(Color.Aqua);
+                        //((TextView)FindViewById(Resource.Id.tvDistanceToCamera)).SetTextSize(Android.Util.ComplexUnitType.Sp, 26);
 
                         //Рисуем квадрат
                         canvas.DrawRect((int)midPoint.X - eyeDistance,
-                         (int)midPoint.Y - eyeDistance,
-                         (int)midPoint.X + eyeDistance,
-                         (int)midPoint.Y + eyeDistance, drawPaint);
+                                        (int)midPoint.Y - eyeDistance,
+                                        (int)midPoint.X + eyeDistance,
+                                        (int)midPoint.Y + eyeDistance, drawPaint);
                     }
                 }
 
@@ -179,6 +181,8 @@ namespace Test
 
             }
         }
+
+        
     }
 
 }

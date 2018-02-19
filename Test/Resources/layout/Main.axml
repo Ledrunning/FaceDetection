@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:alpha="0.4" />
     <Button
-        android:id="@+id/take_picture"
+        android:id="@+id/btnTake_picture"
         android:textColor="@android:color/holo_green_light"
         android:text="Сделать фото"
         android:layout_width="match_parent"
