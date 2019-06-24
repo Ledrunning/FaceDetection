@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Test.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("FaceDetection.Droid.Resource", IsApplication=true)]
 
-namespace Test
+namespace FaceDetection.Droid
 {
 	
 	

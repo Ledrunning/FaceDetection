@@ -7,14 +7,12 @@ using Android.Media;
 using Android.OS;
 using Android.Provider;
 using Android.Widget;
-using static Test.Config.ProgramConstants;
+using static FaceDetection.Droid.Config.ProgramConstants;
 
-//TODO: Захват растояния в реальном времени с камеры, отрисовка прямоугольника 
-//при фиксировании лица
-//Сохранение фото
-//Применение фрагментов, вместо переключения Activity
+//Todo Сохранение фото
+//Todo Применение фрагментов, вместо переключения Activity
 
-namespace Test
+namespace FaceDetection.Droid
 {
     [Activity(Label = "Распознаватель v1.1B", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : Activity
@@ -23,7 +21,6 @@ namespace Test
         private Bitmap cameraBitmap;
 
         private ImageView imageView;
-        //Intent intent;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -31,16 +28,15 @@ namespace Test
             //Установка основного экрана
             SetContentView(Resource.Layout.Main);
             //Событие на кнопку для кнопки сделать фото;
-            ((Button) FindViewById(Resource.Id.btnTake_picture)).Click += btntake_HandleClick;
+            ((Button) FindViewById(Resource.Id.btnTake_picture)).Click += TakePhotoOnClick;
             imageView = (ImageView) FindViewById(Resource.Id.image_view);
         }
-
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
             //Проверяем запрос кода с константой
-            if (TAKE_PICTURE_CODE == requestCode) ProcessCameraImage(data);
+            if (TakePictureCode == requestCode) ProcessCameraImage(data);
         }
 
         /// <summary>
@@ -50,7 +46,7 @@ namespace Test
         {
             using (var intent = new Intent(MediaStore.ActionImageCapture))
             {
-                StartActivityForResult(intent, TAKE_PICTURE_CODE);
+                StartActivityForResult(intent, TakePictureCode);
             }
         }
 
@@ -63,8 +59,8 @@ namespace Test
             //Меняем основное окно на окно захвата изображения
             SetContentView(Resource.Layout.detectlayout);
             //Повесим событие на кнопку определения лиц
-            ((Button) FindViewById(Resource.Id.btnDetect_face)).Click += btnDetect_HandleClick;
-            ((Button) FindViewById(Resource.Id.btnBack)).Click += btnBack_HandleClick;
+            ((Button) FindViewById(Resource.Id.btnDetect_face)).Click += DetectFaceOnClick;
+            ((Button) FindViewById(Resource.Id.btnBack)).Click += BackOnClick;
 
             //Получаем изображения из элемента ImageView
             //ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
@@ -81,12 +77,11 @@ namespace Test
             }
         }
 
-
         /// <summary>
         ///     Детектирование лиц и прорисовка квадрата на каждом из лиц.
         /// </summary
         /// <
-        private void detectFaces()
+        private void DetectFaces()
         {
             // Проверка на получения картинки 
             if (null != cameraBitmap)
@@ -96,9 +91,9 @@ namespace Test
                 //Получаем высоту
                 var height = cameraBitmap.Height;
                 //Создаем экземпляр класса нативных библиотек распознования от Android
-                var detector = new FaceDetector(width, height, MAX_FACES);
+                var detector = new FaceDetector(width, height, MaxFaces);
                 //Создаем массив лиц
-                var faces = new FaceDetector.Face[MAX_FACES];
+                var faces = new FaceDetector.Face[MaxFaces];
                 //Создаем основной Bitmap
                 var bitmap565 = Bitmap.CreateBitmap(width, height, Bitmap.Config.Rgb565);
                 var ditherPaint = new Paint();
@@ -156,26 +151,26 @@ namespace Test
         #region Button Handlers
 
         //Обработчик для открытия камеры
-        private void btntake_HandleClick(object sender, EventArgs e)
+        private void TakePhotoOnClick(object sender, EventArgs e)
         {
             //Вызов события OpenCamera() 
             OpenCamera();
         }
 
         //Обработчик кнопки определения лиц
-        private void btnDetect_HandleClick(object sender, EventArgs e)
+        private void DetectFaceOnClick(object sender, EventArgs e)
         {
             //Вызываем метод определения лиц
-            detectFaces();
+            DetectFaces();
         }
 
         //Обработчик кнопки назад
-        private void btnBack_HandleClick(object sender, EventArgs e)
+        private void BackOnClick(object sender, EventArgs e)
         {
             FinishActivity(Resource.Layout.detectlayout);
             SetContentView(Resource.Layout.Main);
             //Событие на кнопку для кнопки сделать фото;
-            ((Button) FindViewById(Resource.Id.btnTake_picture)).Click += btntake_HandleClick;
+            ((Button) FindViewById(Resource.Id.btnTake_picture)).Click += TakePhotoOnClick;
         }
 
         #endregion

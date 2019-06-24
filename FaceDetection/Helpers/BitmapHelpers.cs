@@ -1,6 +1,6 @@
 ﻿using Android.Graphics;
 
-namespace Test.Helpers
+namespace FaceDetection.Droid.Helpers
 {
     public static class BitmapHelpers
     {
@@ -17,9 +17,11 @@ namespace Test.Helpers
             var inSampleSize = 1;
 
             if (outHeight > height || outWidth > width)
+            {
                 inSampleSize = outWidth > outHeight
                     ? outHeight / height
                     : outWidth / width;
+            }
 
             // Загружаем картинку и изменяем размер
             options.InSampleSize = inSampleSize;
@@ -29,6 +31,4 @@ namespace Test.Helpers
             return resizedBitmap;
         }
     }
-}
-
 }

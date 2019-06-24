@@ -1,11 +1,11 @@
-﻿namespace Test.Config
+﻿namespace FaceDetection.Droid.Config
 {
     public static class ProgramConstants
     {
-        //Intent code for camera activity
-        public static readonly int TAKE_PICTURE_CODE = 100;
+        // Intent code for camera activity
+        public static readonly int TakePictureCode = 100;
 
-        //Max Faces to detect in a picture
-        public static readonly int MAX_FACES = 5;
+        // Max Faces to detect in a picture
+        public static readonly int MaxFaces = 5;
     }
 }
