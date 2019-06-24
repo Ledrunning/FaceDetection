@@ -79,8 +79,7 @@ namespace FaceDetection.Droid
 
         /// <summary>
         ///     Детектирование лиц и прорисовка квадрата на каждом из лиц.
-        /// </summary
-        /// <
+        /// </summary>
         private void DetectFaces()
         {
             // Проверка на получения картинки 
@@ -113,35 +112,33 @@ namespace FaceDetection.Droid
                 //Средняя точка
                 var midPoint = new PointF();
                 //Расстояние до глаз
-                var eyeDistance = 0.0f;
-                var confidence = 0.0f;
+                float eyeDistance;
+                float confidence;
                 //Печать в консоль для тестирования приложения
-                Console.WriteLine("Найдено лиц: " + facesFound);
+                Console.WriteLine($"Найдено лиц: {facesFound}");
                 //Проверка, что найдено хоть одно лицо
                 if (facesFound > 0)
+                {
                     for (var index = 0; index < facesFound; ++index)
                     {
                         faces[index].GetMidPoint(midPoint);
                         eyeDistance = faces[index].EyesDistance();
                         confidence = faces[index].Confidence();
                         //Печатаем для отладки в консоль
-                        Console.WriteLine("Коэфициент доверия: " + confidence +
-                                          ", Расстояние до глаз: " + eyeDistance +
-                                          ", Средняя точка: (" + midPoint.X + ", " + midPoint.Y + ")");
+                        Console.WriteLine($"Коэфициент доверия: {confidence} Расстояние до глаз: {eyeDistance}" +
+                                          $"Средняя точка: ( X: {midPoint.X} Y: {midPoint.Y} )");
 
 
                         //Передаем в TextView значение расстояния до лица
-                        ((TextView) FindViewById(Resource.Id.tvDistanceToCamera)).Text =
-                            string.Format("{0:0.00} см", eyeDistance);
-                        //((TextView)FindViewById(Resource.Id.tvDistanceToCamera)).SetTextColor(Color.Aqua);
-                        //((TextView)FindViewById(Resource.Id.tvDistanceToCamera)).SetTextSize(Android.Util.ComplexUnitType.Sp, 26);
+                        ((TextView)FindViewById(Resource.Id.tvDistanceToCamera)).Text = $"{eyeDistance:0.00} см";
 
                         //Рисуем квадрат
-                        canvas.DrawRect((int) midPoint.X - eyeDistance,
-                            (int) midPoint.Y - eyeDistance,
-                            (int) midPoint.X + eyeDistance,
-                            (int) midPoint.Y + eyeDistance, drawPaint);
+                        canvas.DrawRect((int)midPoint.X - eyeDistance,
+                            (int)midPoint.Y - eyeDistance,
+                            (int)midPoint.X + eyeDistance,
+                            (int)midPoint.Y + eyeDistance, drawPaint);
                     }
+                }
 
                 var imageView = (ImageView) FindViewById(Resource.Id.image_view);
                 imageView.SetImageBitmap(bitmap565);
