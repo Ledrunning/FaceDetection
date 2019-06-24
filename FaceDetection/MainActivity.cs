@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -8,6 +9,9 @@ using Android.OS;
 using Android.Provider;
 using Android.Widget;
 using static FaceDetection.Droid.Config.ProgramConstants;
+using Environment = Android.OS.Environment;
+using Path = System.IO.Path;
+using Stream = Android.Media.Stream;
 
 //Todo Сохранение фото
 //Todo Применение фрагментов, вместо переключения Activity
@@ -44,9 +48,16 @@ namespace FaceDetection.Droid
         /// </summary>
         private void OpenCamera()
         {
-            using (var intent = new Intent(MediaStore.ActionImageCapture))
+            try
             {
-                StartActivityForResult(intent, TakePictureCode);
+                using (var intent = new Intent(MediaStore.ActionImageCapture))
+                {
+                    StartActivityForResult(intent, TakePictureCode);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
@@ -62,8 +73,6 @@ namespace FaceDetection.Droid
             ((Button) FindViewById(Resource.Id.btnDetect_face)).Click += DetectFaceOnClick;
             ((Button) FindViewById(Resource.Id.btnBack)).Click += BackOnClick;
 
-            //Получаем изображения из элемента ImageView
-            //ImageView imageView = (ImageView)FindViewById(Resource.Id.image_view);
             try
             {
                 cameraBitmap = (Bitmap) intent.Extras.Get("data");
@@ -73,7 +82,6 @@ namespace FaceDetection.Droid
             catch (Exception e)
             {
                 Toast.MakeText(this, "Фото не сделанно!", ToastLength.Short).Show();
-                //cameraBitmap.Dispose();
             }
         }
 
@@ -142,6 +150,22 @@ namespace FaceDetection.Droid
 
                 var imageView = (ImageView) FindViewById(Resource.Id.image_view);
                 imageView.SetImageBitmap(bitmap565);
+            }
+        }
+
+        void SaveToExternalStorage(Bitmap bitmap)
+        {
+            try
+            {
+                var sdCardPath = Environment.ExternalStorageDirectory.AbsolutePath;
+                var filePath = Path.Combine(sdCardPath, $"photo{DateTime.Now}.jpg");
+                var stream = new FileStream(filePath, FileMode.Create);
+                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+                stream.Close();
+            }
+            catch (Exception e)
+            {
+                Toast.MakeText(this, "Error. Can't save a file", ToastLength.Short);
             }
         }
 
