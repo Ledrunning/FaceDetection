@@ -9,4 +9,8 @@
 Application will detect face and distance to the face from photo which you get;
 Tested on tablet on Android 5.1 Lollipop; 
 
+https://www.youtube.com/watch?v=-eY2DaHTa9w
+
 !![](https://habrastorage.org/webt/26/va/ij/26vaijfieefkemrhs8jvo8t7voe.jpeg)
+
+
