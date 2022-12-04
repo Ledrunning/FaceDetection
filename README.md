@@ -11,4 +11,4 @@ Tested on tablet on Android 5.1 Lollipop;
 
 Click on image to watch video:
 
-[![Watch the video](https://habrastorage.org/webt/26/va/ij/26vaijfieefkemrhs8jvo8t7voe.jpeg)](https://youtu.be/-eY2DaHTa9w)
+[![Watch the video](https://habrastorage.org/webt/26/va/ij/26vaijfieefkemrhs8jvo8t7voe.jpeg)](https://youtube.com/shorts/f775peyzu3c?feature=share)
